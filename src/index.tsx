@@ -17,6 +17,7 @@ import App, { consumePendingLaunchRequest } from "./app";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { APP_NAME, CONFIG, ENV_VARS } from "./lib/config";
 import { getVersionString } from "./lib/version";
+import { parseThemeFlag, resolveTheme } from "./themes";
 
 const INNER_FLAG = "--inner";
 
@@ -32,7 +33,12 @@ Options:
   --uninstall-plugin  Remove the OpenCode plugin
   --no-notify         Disable desktop notifications
   --ws-port <port>    WebSocket server port (default: ${CONFIG.ws.port})
+  --theme <name>      Load theme from ~/.config/oc-mon/themes/<name>.toml
   --debug             Enable debug logging (see OPENCODE_MONITOR_LOG_FILE)
+
+Theme Config:
+  ~/.config/oc-mon/config.toml         Set theme = "gruvbox"
+  ~/.config/oc-mon/themes/<name>.toml  Define custom theme tokens
 
 Keyboard Controls:
   up/down, j/k        Navigate sessions
@@ -182,6 +188,8 @@ async function runTUI(args: string[]): Promise<never> {
     process.exit(0);
   }
 
+  const theme = resolveTheme({ cliTheme: parseThemeFlag(args) });
+
   const consoleLogPath =
     process.env[ENV_VARS.consoleLog] || join(tmpdir(), "monitor.log");
   const logStream = createWriteStream(consoleLogPath, { flags: "a" });
@@ -225,6 +233,7 @@ async function runTUI(args: string[]): Promise<never> {
         notificationsEnabled={notificationsEnabled}
         initialSessionId={initialSessionId}
         wsPort={wsPort}
+        theme={theme}
         onExit={handleExit}
       />
     </ErrorBoundary>,

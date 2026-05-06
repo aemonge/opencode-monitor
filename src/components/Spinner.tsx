@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { Row } from "./primitives";
+import type { Theme } from "../themes";
 
-export default function Spinner({ isBusy }: { isBusy: boolean }) {
+export default function Spinner({
+  isBusy,
+  theme,
+}: {
+  isBusy: boolean;
+  theme?: Theme;
+}) {
   const [frame, setFrame] = useState(0);
   const SPINNER_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 
@@ -14,7 +21,9 @@ export default function Spinner({ isBusy }: { isBusy: boolean }) {
   if (!isBusy) return <Row width={2} />;
   return (
     <Row width={2}>
-      <text fg="yellow">{SPINNER_FRAMES[frame] ?? "⠋"}</text>
+      <text fg={theme?.warning ?? "yellow"}>
+        {SPINNER_FRAMES[frame] ?? "⠋"}
+      </text>
     </Row>
   );
 }

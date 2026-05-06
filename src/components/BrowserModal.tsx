@@ -5,6 +5,8 @@ import { TextAttributes } from "@opentui/core";
 import { truncateText } from "../lib/text";
 import { CONFIG } from "../lib/config";
 import { Row, Col } from "./primitives";
+import { DEFAULT_THEME } from "../themes";
+import type { Theme } from "../themes";
 import type { BrowserModalState } from "../types";
 
 // Re-export for backwards compatibility
@@ -14,6 +16,7 @@ interface BrowserModalProps {
   modal: BrowserModalState;
   width: number;
   height: number;
+  theme?: Theme;
 }
 
 interface ModalContainerProps {
@@ -25,6 +28,7 @@ interface ModalContainerProps {
   modalWidth: number;
   /** Border color */
   borderColor: string;
+  backgroundColor: string;
   /** Modal content */
   children: React.ReactNode;
 }
@@ -38,12 +42,13 @@ function ModalContainer({
   screenHeight,
   modalWidth,
   borderColor,
+  backgroundColor,
   children,
 }: ModalContainerProps): React.ReactNode {
   return (
     <Col
       position="absolute"
-      backgroundColor="black"
+      backgroundColor={backgroundColor}
       border={true}
       borderStyle="rounded"
       borderColor={borderColor}
@@ -67,6 +72,7 @@ export function BrowserModal({
   modal,
   width,
   height,
+  theme = DEFAULT_THEME,
 }: BrowserModalProps): React.ReactNode {
   if (!modal) return null;
 
@@ -76,9 +82,10 @@ export function BrowserModal({
         screenWidth={width}
         screenHeight={height}
         modalWidth={CONFIG.modal.subagentWidth}
-        borderColor="yellow"
+        borderColor={theme.warning}
+        backgroundColor={theme.bg}
       >
-        <text style={{ attributes: TextAttributes.BOLD }} fg="yellow">
+        <text style={{ attributes: TextAttributes.BOLD }} fg={theme.warning}>
           Cannot Open Subagent in Browser
         </text>
         <Col marginTop={1}>
@@ -93,11 +100,11 @@ export function BrowserModal({
           <text>{truncateText(modal.parentSession.name || "Unknown", 28)}</text>
         </Row>
         <Row marginTop={1} justifyContent="center">
-          <text style={{ attributes: TextAttributes.BOLD }} fg="green">
+          <text style={{ attributes: TextAttributes.BOLD }} fg={theme.success}>
             [Y]
           </text>
           <text> Open Parent </text>
-          <text style={{ attributes: TextAttributes.BOLD }} fg="red">
+          <text style={{ attributes: TextAttributes.BOLD }} fg={theme.error}>
             [N]
           </text>
           <text> Cancel</text>
@@ -112,9 +119,10 @@ export function BrowserModal({
         screenWidth={width}
         screenHeight={height}
         modalWidth={CONFIG.modal.serverUnavailableWidth}
-        borderColor="red"
+        borderColor={theme.error}
+        backgroundColor={theme.bg}
       >
-        <text style={{ attributes: TextAttributes.BOLD }} fg="red">
+        <text style={{ attributes: TextAttributes.BOLD }} fg={theme.error}>
           Server Unavailable
         </text>
         <Col marginTop={1}>
@@ -155,9 +163,10 @@ export function BrowserModal({
         screenWidth={width}
         screenHeight={height}
         modalWidth={CONFIG.modal.tuiServerUnavailableWidth}
-        borderColor="red"
+        borderColor={theme.error}
+        backgroundColor={theme.bg}
       >
-        <text style={{ attributes: TextAttributes.BOLD }} fg="red">
+        <text style={{ attributes: TextAttributes.BOLD }} fg={theme.error}>
           Cannot Attach to Session
         </text>
         <Col marginTop={1}>
@@ -198,9 +207,10 @@ export function BrowserModal({
         screenWidth={width}
         screenHeight={height}
         modalWidth={CONFIG.modal.serverUnavailableWidth}
-        borderColor="yellow"
+        borderColor={theme.warning}
+        backgroundColor={theme.bg}
       >
-        <text style={{ attributes: TextAttributes.BOLD }} fg="yellow">
+        <text style={{ attributes: TextAttributes.BOLD }} fg={theme.warning}>
           Cannot Open in Browser
         </text>
         <Col marginTop={1}>
@@ -230,9 +240,10 @@ export function BrowserModal({
         screenWidth={width}
         screenHeight={height}
         modalWidth={CONFIG.modal.tuiServerUnavailableWidth}
-        borderColor="yellow"
+        borderColor={theme.warning}
+        backgroundColor={theme.bg}
       >
-        <text style={{ attributes: TextAttributes.BOLD }} fg="yellow">
+        <text style={{ attributes: TextAttributes.BOLD }} fg={theme.warning}>
           Cannot Attach to Session
         </text>
         <Col marginTop={1}>

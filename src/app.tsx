@@ -23,6 +23,8 @@ import { CONFIG } from "./lib/config";
 import { debug } from "./lib/debug";
 import { extractErrorMessage } from "./lib/errors";
 import { useSessionStore, useUIStore, useConnectionStore } from "./stores";
+import { DEFAULT_THEME } from "./themes";
+import type { Theme } from "./themes";
 import type { Session, SessionNode, ListItem } from "./types";
 
 // Re-export store functions for backwards compatibility with index.tsx
@@ -34,6 +36,7 @@ interface AppProps {
   notificationsEnabled?: boolean;
   initialSessionId?: string | undefined;
   wsPort?: number;
+  theme?: Theme;
   onExit?: () => void;
 }
 
@@ -41,6 +44,7 @@ export default function App({
   notificationsEnabled = true,
   initialSessionId,
   wsPort = CONFIG.ws.port,
+  theme = DEFAULT_THEME,
   onExit,
 }: AppProps): React.ReactNode {
   const renderer = useRenderer();
@@ -229,7 +233,7 @@ export default function App({
       <Row
         border={true}
         borderStyle="single"
-        borderColor="blue"
+        borderColor={theme.primary}
         paddingLeft={1}
         paddingRight={1}
         flexShrink={0}
@@ -254,6 +258,7 @@ export default function App({
           servers={servers}
           nodesByServer={nodesByServer}
           collapsedServers={collapsedServers}
+          theme={theme}
         />
 
         {/* Details panel */}
@@ -261,7 +266,7 @@ export default function App({
           width={detailsPanelWidth}
           border={true}
           borderStyle="single"
-          borderColor="#666666"
+          borderColor={theme.border}
           paddingLeft={1}
           paddingRight={1}
           flexShrink={0}
@@ -291,6 +296,7 @@ export default function App({
                     server={server}
                     panelWidth={detailsPanelWidth}
                     nodesByServer={nodesByServer}
+                    theme={theme}
                   />
                 );
               })()
@@ -313,6 +319,7 @@ export default function App({
                       server={server}
                       serverSessions={serverSessions}
                       panelWidth={detailsPanelWidth}
+                      theme={theme}
                     />
                   );
                 })()
@@ -324,7 +331,7 @@ export default function App({
       <Row
         border={true}
         borderStyle="single"
-        borderColor="#666666"
+        borderColor={theme.border}
         paddingLeft={1}
         paddingRight={1}
         flexShrink={0}
@@ -341,7 +348,12 @@ export default function App({
       </Row>
 
       {/* Browser warning modals */}
-      <BrowserModal modal={browserModal} width={width} height={height} />
+      <BrowserModal
+        modal={browserModal}
+        width={width}
+        height={height}
+        theme={theme}
+      />
     </Col>
   );
 }

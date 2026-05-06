@@ -324,7 +324,42 @@ bun start -- --debug
 | ------------------ | ------------------------------------------------------ |
 | `--debug`          | Enable debug logging (see `OPENCODE_MONITOR_LOG_FILE`) |
 | `--no-notify`      | Disable desktop notifications                          |
+| `--theme <name>`   | Load `~/.config/oc-mon/themes/<name>.toml` or built-in theme |
 | `--ws-port <port>` | WebSocket server port (default: 41235)                 |
+
+### TUI Theme Configuration
+
+`oc-mon` uses its default palette unless a theme is selected by CLI or config.
+The config directory is created automatically at `~/.config/oc-mon`.
+
+```bash
+# Use the built-in gruvbox theme, or a matching user theme file
+oc-mon --theme gruvbox
+```
+
+Set a persistent theme in `~/.config/oc-mon/config.toml`:
+
+```toml
+theme = "gruvbox"
+```
+
+Custom themes live in `~/.config/oc-mon/themes/<name>.toml` and use flat
+string token assignments:
+
+```toml
+bg = "#282828"
+surface = "#3c3836"
+text = "#ebdbb2"
+text-muted = "#928374"
+primary = "#fabd2f"
+border = "#665c54"
+error = "#fb4934"
+warning = "#fe8019"
+success = "#b8bb26"
+```
+
+CLI `--theme <name>` overrides the config file. First-pass theme files support
+only flat `key = "value"` TOML entries.
 
 ### TUI Environment Variables
 

@@ -1,27 +1,29 @@
 // Data formatting utilities
 
+import type { Theme } from "../themes";
+
 /**
  * Get color associated with session status
  * @param status - Session status string
  * @returns Color name for terminal display
  */
-export function getStatusColor(status: string): string {
+export function getStatusColor(status: string, theme?: Theme): string {
   switch (status) {
     case "idle":
-      return "green";
+      return theme?.success ?? "green";
     case "busy":
-      return "blue";
+      return theme?.primary ?? "blue";
     case "retry":
       return "magenta";
     case "waiting_for_permission":
-      return "yellow";
+      return theme?.warning ?? "yellow";
     case "completed":
-      return "gray";
+      return theme?.textMuted ?? "gray";
     case "error":
     case "aborted":
-      return "red";
+      return theme?.error ?? "red";
     default:
-      return "white";
+      return theme?.text ?? "white";
   }
 }
 
@@ -76,11 +78,15 @@ export function formatContextUsage(used?: number, limit?: number): string {
  * @param limit - Token limit
  * @returns Hex color code for terminal display
  */
-export function getContextUsageColor(used?: number, limit?: number): string {
-  if (!used || !limit || limit === 0) return "#666666";
+export function getContextUsageColor(
+  used?: number,
+  limit?: number,
+  theme?: Theme,
+): string {
+  if (!used || !limit || limit === 0) return theme?.textMuted ?? "#666666";
 
   const ratio = used / limit;
-  if (ratio > 0.8) return "#ff6b6b"; // red - high usage
-  if (ratio > 0.5) return "#ffd93d"; // yellow - medium usage
-  return "#6bcf7f"; // green - low usage
+  if (ratio > 0.8) return theme?.error ?? "#ff6b6b"; // red - high usage
+  if (ratio > 0.5) return theme?.warning ?? "#ffd93d"; // yellow - medium usage
+  return theme?.success ?? "#6bcf7f"; // green - low usage
 }
