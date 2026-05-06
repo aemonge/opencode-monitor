@@ -10,6 +10,7 @@ import {
 import { truncateText } from "../lib/text";
 import Spinner from "./Spinner";
 import { Row, Col } from "./primitives";
+import { getSelectedTextColor, getThemedBoxProps } from "../themes";
 import type { Theme } from "../themes";
 import type { Session, SessionNode, Server, ListItem } from "../types";
 
@@ -49,7 +50,7 @@ function renderSessionName(
           style={{
             attributes: isSelected ? TextAttributes.BOLD : TextAttributes.NONE,
           }}
-          fg={isSelected ? "white" : theme.text}
+          fg={isSelected ? getSelectedTextColor(theme) : theme.text}
         >
           {truncatedMain}
         </text>
@@ -63,7 +64,7 @@ function renderSessionName(
       style={{
         attributes: isSelected ? TextAttributes.BOLD : TextAttributes.NONE,
       }}
-      fg={isSelected ? "white" : theme.text}
+      fg={isSelected ? getSelectedTextColor(theme) : theme.text}
     >
       {truncateText(safeName, maxWidth)}
     </text>
@@ -100,19 +101,35 @@ function SessionStatus({
   }
 
   if (session.status === "idle") {
-    return <text fg={isSelected ? "white" : theme.success}>●</text>;
+    return (
+      <text fg={isSelected ? getSelectedTextColor(theme) : theme.success}>
+        ●
+      </text>
+    );
   }
 
   if (session.status === "completed") {
-    return <text fg={isSelected ? "white" : theme.textMuted}>○</text>;
+    return (
+      <text fg={isSelected ? getSelectedTextColor(theme) : theme.textMuted}>
+        ○
+      </text>
+    );
   }
 
   if (session.status === "error" || session.status === "aborted") {
-    return <text fg={isSelected ? "white" : theme.error}>✕</text>;
+    return (
+      <text fg={isSelected ? getSelectedTextColor(theme) : theme.error}>✕</text>
+    );
   }
 
   return (
-    <text fg={isSelected ? "white" : getStatusColor(session.status, theme)}>
+    <text
+      fg={
+        isSelected
+          ? getSelectedTextColor(theme)
+          : getStatusColor(session.status, theme)
+      }
+    >
       ●
     </text>
   );
@@ -146,7 +163,13 @@ function ServerGroupRow({
     >
       <text
         style={{ attributes: TextAttributes.BOLD }}
-        fg={isSelected ? "white" : isPending ? theme.textMuted : theme.primary}
+        fg={
+          isSelected
+            ? getSelectedTextColor(theme)
+            : isPending
+              ? theme.textMuted
+              : theme.primary
+        }
       >
         {`${indicator} ${serverName} (${nodeCount})`}
       </text>
@@ -268,8 +291,14 @@ export function SessionList({
 
   if (servers.size === 0) {
     return (
-      <Col width={listWidth} flexGrow={1}>
-        <Col paddingLeft={1} paddingRight={1} paddingTop={1} paddingBottom={1}>
+      <Col width={listWidth} flexGrow={1} {...getThemedBoxProps(theme)}>
+        <Col
+          paddingLeft={1}
+          paddingRight={1}
+          paddingTop={1}
+          paddingBottom={1}
+          {...getThemedBoxProps(theme)}
+        >
           <text style={{ attributes: TextAttributes.DIM }} fg={theme.textMuted}>
             {"Waiting for OpenCode servers..."}
           </text>
@@ -279,10 +308,10 @@ export function SessionList({
   }
 
   return (
-    <Col width={listWidth} flexGrow={1}>
+    <Col width={listWidth} flexGrow={1} {...getThemedBoxProps(theme)}>
       {/* Scroll indicator - more above */}
       {hasMoreAbove ? (
-        <Row justifyContent="center">
+        <Row justifyContent="center" {...getThemedBoxProps(theme)}>
           <text fg={theme.primary}>{`▲ ${moreAboveCount} more above`}</text>
         </Row>
       ) : null}
@@ -322,11 +351,11 @@ export function SessionList({
       })}
 
       {/* Spacer to push "more below" to bottom */}
-      <Col flexGrow={1} />
+      <Col flexGrow={1} {...getThemedBoxProps(theme)} />
 
       {/* Scroll indicator - more below */}
       {hasMoreBelow ? (
-        <Row justifyContent="center">
+        <Row justifyContent="center" {...getThemedBoxProps(theme)}>
           <text fg={theme.primary}>{`▼ ${moreBelowCount} more below`}</text>
         </Row>
       ) : null}

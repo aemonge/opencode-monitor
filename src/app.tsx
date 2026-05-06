@@ -23,7 +23,7 @@ import { CONFIG } from "./lib/config";
 import { debug } from "./lib/debug";
 import { extractErrorMessage } from "./lib/errors";
 import { useSessionStore, useUIStore, useConnectionStore } from "./stores";
-import { DEFAULT_THEME } from "./themes";
+import { DEFAULT_THEME, getThemedBoxProps, getThemedTextProps } from "./themes";
 import type { Theme } from "./themes";
 import type { Session, SessionNode, ListItem } from "./types";
 
@@ -228,7 +228,7 @@ export default function App({
   );
 
   return (
-    <Col width={width} height={height}>
+    <Col width={width} height={height} {...getThemedBoxProps(theme)}>
       {/* Header */}
       <Row
         border={true}
@@ -237,17 +237,26 @@ export default function App({
         paddingLeft={1}
         paddingRight={1}
         flexShrink={0}
+        {...getThemedBoxProps(theme)}
       >
-        <text style={{ attributes: TextAttributes.BOLD }}>
+        <text
+          style={{ attributes: TextAttributes.BOLD }}
+          {...getThemedTextProps(theme)}
+        >
           OpenCode Session Monitor
         </text>
-        <text style={{ attributes: TextAttributes.DIM }}>
+        <text style={{ attributes: TextAttributes.DIM }} fg={theme.textMuted}>
           {` | Servers: ${servers.size} | Sessions: ${flatItems.filter((i) => i.type === "session").length}/${sessions.size}`}
         </text>
       </Row>
 
       {/* Main content */}
-      <Row flexGrow={1} flexShrink={1} overflow="hidden">
+      <Row
+        flexGrow={1}
+        flexShrink={1}
+        overflow="hidden"
+        {...getThemedBoxProps(theme)}
+      >
         {/* Session list */}
         <SessionList
           visibleItems={visibleItems}
@@ -270,8 +279,12 @@ export default function App({
           paddingLeft={1}
           paddingRight={1}
           flexShrink={0}
+          {...getThemedBoxProps(theme)}
         >
-          <text style={{ attributes: TextAttributes.BOLD }}>
+          <text
+            style={{ attributes: TextAttributes.BOLD }}
+            {...getThemedTextProps(theme)}
+          >
             {flatItems[selectedIndex]?.type === "group"
               ? "Server Details"
               : "Session Details"}
@@ -336,13 +349,14 @@ export default function App({
         paddingRight={1}
         flexShrink={0}
         justifyContent="space-between"
+        {...getThemedBoxProps(theme)}
       >
-        <text style={{ attributes: TextAttributes.DIM }}>
+        <text style={{ attributes: TextAttributes.DIM }} fg={theme.textMuted}>
           {
             "q:quit | t:tui | b:browser | space:toggle | c:toggle all | g/G:top/end"
           }
         </text>
-        <text style={{ attributes: TextAttributes.DIM }}>
+        <text style={{ attributes: TextAttributes.DIM }} fg={theme.textMuted}>
           {getVersionString()}
         </text>
       </Row>

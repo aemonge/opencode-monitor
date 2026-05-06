@@ -271,7 +271,9 @@ export function SessionDetails({
       {showModel ? (
         <Col>
           <SectionDivider title="Model" panelWidth={panelWidth} theme={theme} />
-          <text style={{ attributes: dim }}>{modelStr}</text>
+          <text style={{ attributes: dim }} fg={theme.textMuted}>
+            {modelStr}
+          </text>
         </Col>
       ) : null}
 
@@ -287,9 +289,13 @@ export function SessionDetails({
       ) : null}
       {directoryStr !== "" ? (
         <Col marginTop={1}>
-          <text style={{ attributes: dimBold }}>{"Directory:"}</text>
+          <text style={{ attributes: dimBold }} fg={theme.textMuted}>
+            {"Directory:"}
+          </text>
           <Row paddingLeft={1}>
-            <text style={{ attributes: dim }}>{directoryStr}</text>
+            <text style={{ attributes: dim }} fg={theme.textMuted}>
+              {directoryStr}
+            </text>
           </Row>
         </Col>
       ) : null}
@@ -297,15 +303,21 @@ export function SessionDetails({
         <Col marginTop={1}>
           {serverUrlStr === "disabled" ? (
             <text>
-              <span style={{ attributes: dimBold }}>{"Server: "}</span>
-              <span style={{ attributes: dim }}>{serverNameStr}</span>
+              <span style={{ attributes: dimBold }} fg={theme.textMuted}>
+                {"Server: "}
+              </span>
+              <span style={{ attributes: dim }} fg={theme.textMuted}>
+                {serverNameStr}
+              </span>
               <span fg={theme.warning}>{" (HTTP Disabled)"}</span>
             </text>
           ) : (
             <>
               <LabeledValue label="Server: " value={serverNameStr} />
               <Row paddingLeft={1}>
-                <text style={{ attributes: dim }}>{serverUrlStr}</text>
+                <text style={{ attributes: dim }} fg={theme.textMuted}>
+                  {serverUrlStr}
+                </text>
               </Row>
             </>
           )}

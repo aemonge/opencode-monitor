@@ -8,6 +8,9 @@ import {
   getMonitorConfigDir,
   parseFlatToml,
   parseThemeFlag,
+  getThemedTextProps,
+  getThemedBoxProps,
+  getSelectedTextColor,
   resolveTheme,
 } from "../index";
 
@@ -50,6 +53,21 @@ describe("resolveTheme", () => {
     writeFileSync(join(configDir, "config.toml"), 'theme = "gruvbox"\n');
 
     expect(resolveTheme({ configHome })).toEqual(GRUVBOX_THEME);
+  });
+
+  it("uses Gruvbox Light Soft colors for the built-in gruvbox theme", () => {
+    expect(resolveTheme({ cliTheme: "gruvbox" })).toEqual({
+      name: "gruvbox",
+      bg: "#f2e5bc",
+      surface: "#ebdbb2",
+      text: "#3c3836",
+      textMuted: "#7c6f64",
+      primary: "#b57614",
+      border: "#d5c4a1",
+      error: "#9d0006",
+      warning: "#af3a03",
+      success: "#79740e",
+    });
   });
 
   it("uses CLI theme instead of config theme", () => {
@@ -107,5 +125,21 @@ describe("parseThemeFlag", () => {
     expect(() => parseThemeFlag(["--theme"])).toThrow(
       "Missing value for --theme.",
     );
+  });
+});
+
+describe("themed prop helpers", () => {
+  it("returns foreground props for themed text", () => {
+    expect(getThemedTextProps(GRUVBOX_THEME)).toEqual({ fg: "#3c3836" });
+  });
+
+  it("returns background props for themed boxes", () => {
+    expect(getThemedBoxProps(GRUVBOX_THEME)).toEqual({
+      backgroundColor: "#f2e5bc",
+    });
+  });
+
+  it("uses themed text instead of white for selected rows", () => {
+    expect(getSelectedTextColor(GRUVBOX_THEME)).toBe("#3c3836");
   });
 });

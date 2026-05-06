@@ -347,15 +347,15 @@ Custom themes live in `~/.config/oc-mon/themes/<name>.toml` and use flat
 string token assignments:
 
 ```toml
-bg = "#282828"
-surface = "#3c3836"
-text = "#ebdbb2"
-text-muted = "#928374"
-primary = "#fabd2f"
-border = "#665c54"
-error = "#fb4934"
-warning = "#fe8019"
-success = "#b8bb26"
+bg = "#f2e5bc"
+surface = "#ebdbb2"
+text = "#3c3836"
+text-muted = "#7c6f64"
+primary = "#b57614"
+border = "#d5c4a1"
+error = "#9d0006"
+warning = "#af3a03"
+success = "#79740e"
 ```
 
 CLI `--theme <name>` overrides the config file. First-pass theme files support

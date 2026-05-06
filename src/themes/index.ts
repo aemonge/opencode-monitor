@@ -50,15 +50,15 @@ export const DEFAULT_THEME: Theme = {
 
 export const GRUVBOX_THEME: Theme = {
   name: "gruvbox",
-  bg: "#282828",
-  surface: "#3c3836",
-  text: "#ebdbb2",
-  textMuted: "#928374",
-  primary: "#fabd2f",
-  border: "#665c54",
-  error: "#fb4934",
-  warning: "#fe8019",
-  success: "#b8bb26",
+  bg: "#f2e5bc",
+  surface: "#ebdbb2",
+  text: "#3c3836",
+  textMuted: "#7c6f64",
+  primary: "#b57614",
+  border: "#d5c4a1",
+  error: "#9d0006",
+  warning: "#af3a03",
+  success: "#79740e",
 };
 
 const BUILT_IN_THEMES: Record<string, Theme> = {
@@ -73,6 +73,18 @@ interface MonitorConfig {
 export interface ResolveThemeOptions {
   cliTheme?: string | undefined;
   configHome?: string | undefined;
+}
+
+export function getThemedTextProps(theme: Theme): { fg: string } {
+  return { fg: theme.text };
+}
+
+export function getThemedBoxProps(theme: Theme): { backgroundColor: string } {
+  return { backgroundColor: theme.bg };
+}
+
+export function getSelectedTextColor(theme: Theme): string {
+  return theme.text;
 }
 
 function normalizeKey(key: string): string {
