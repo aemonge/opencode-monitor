@@ -1,6 +1,17 @@
 # OpenCode Monitor
 
-**Keep track of all your OpenCode sessions in one place.** Monitor dozens of AI coding sessions across multiple machines, get instant desktop notifications when tasks complete or need approval, and jump into any session with a single keystroke.
+> **📌 Fork install note**: While the upstream PR is pending acceptance, install this
+> fork directly via:
+>
+> ```bash
+> bun remove -g @actualyze/opencode-monitor  # remove upstream version if installed
+> bun add -g github:aemonge/opencode-monitor
+> oc-mon --install-plugin
+> ```
+
+**Keep track of all your OpenCode sessions in one place.** Monitor dozens of AI coding
+sessions across multiple machines, get instant desktop notifications when tasks complete
+or need approval, and jump into any session with a single keystroke.
 
 ![Version](https://img.shields.io/badge/version-1.0.1-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -8,7 +19,9 @@
 
 ## Why Use This?
 
-When you're running multiple OpenCode sessions—whether it's parallel feature development, code reviews, or background tasks—it's easy to lose track of what's happening. This monitor gives you:
+When you're running multiple OpenCode sessions—whether it's parallel feature
+development, code reviews, or background tasks—it's easy to lose track of what's
+happening. This monitor gives you:
 
 - **Single dashboard** for all sessions across all machines
 - **Desktop notifications** when sessions finish or need permission approval
@@ -41,14 +54,19 @@ When you're running multiple OpenCode sessions—whether it's parallel feature d
 
 ## Features
 
-- **Multi-server monitoring** — Track sessions across multiple machines from one terminal
-- **Desktop notifications** — Get notified when sessions complete or need permission approval
+- **Multi-server monitoring** — Track sessions across multiple machines from one
+  terminal
+- **Desktop notifications** — Get notified when sessions complete or need permission
+  approval
 - **Instant session access** — Press `t` to attach or `b` to open in browser
 - **Hierarchical view** — See parent sessions and their subagents in a tree structure
 - **Collapsible groups** — Organize sessions by server, collapse groups you don't need
-- **Live status updates** — Real-time status via WebSocket with visual spinners for busy sessions
-- **Token & cost tracking** — Monitor input/output tokens, cache usage, and cumulative costs
-- **Context warnings** — Color-coded context usage (green/yellow/red) to prevent overflows
+- **Live status updates** — Real-time status via WebSocket with visual spinners for busy
+  sessions
+- **Token & cost tracking** — Monitor input/output tokens, cache usage, and cumulative
+  costs
+- **Context warnings** — Color-coded context usage (green/yellow/red) to prevent
+  overflows
 
 ### Session Details Panel
 
@@ -76,7 +94,9 @@ When you're running multiple OpenCode sessions—whether it's parallel feature d
 - Press `Space` to collapse/expand server groups
 - Auto-return to monitor after OpenCode exits
 
-> **Important**: The `t` (attach) and `b` (browser) actions require OpenCode to be running with its HTTP server enabled. See [OpenCode Server Mode](#opencode-server-mode) for configuration details.
+> **Important**: The `t` (attach) and `b` (browser) actions require OpenCode to be
+> running with its HTTP server enabled. See
+> [OpenCode Server Mode](#opencode-server-mode) for configuration details.
 
 ## Quick Start
 
@@ -94,7 +114,8 @@ oc-mon --install-plugin
 oc-mon
 ```
 
-> **Note**: To attach to sessions or open them in browser, OpenCode must be running with its HTTP server enabled. See [OpenCode Server Mode](#opencode-server-mode) below.
+> **Note**: To attach to sessions or open them in browser, OpenCode must be running with
+> its HTTP server enabled. See [OpenCode Server Mode](#opencode-server-mode) below.
 
 ### Install from source
 
@@ -109,7 +130,8 @@ bun start
 
 ## OpenCode Server Mode
 
-**⚠️ Critical**: OpenCode now defaults to running **without** an HTTP server. The `t` (attach) and `b` (browser) actions require OpenCode's HTTP server to be enabled.
+**⚠️ Critical**: OpenCode now defaults to running **without** an HTTP server. The `t`
+(attach) and `b` (browser) actions require OpenCode's HTTP server to be enabled.
 
 ### Enabling the HTTP Server
 
@@ -123,7 +145,11 @@ Add this to your OpenCode configuration (`~/.config/opencode/config.json`):
 }
 ```
 
-> **Why `localhost`?** OpenCode only starts the HTTP server when the hostname differs from the default (`127.0.0.1`). Using `localhost` triggers the server while still binding to the loopback interface. See [anomalyco/opencode#8562](https://github.com/anomalyco/opencode/pull/8562) for a cleaner `server.enabled` option (pending merge).
+> **Why `localhost`?** OpenCode only starts the HTTP server when the hostname differs
+> from the default (`127.0.0.1`). Using `localhost` triggers the server while still
+> binding to the loopback interface. See
+> [anomalyco/opencode#8562](https://github.com/anomalyco/opencode/pull/8562) for a
+> cleaner `server.enabled` option (pending merge).
 
 ### Alternative: Environment Variable
 
@@ -142,7 +168,8 @@ When OpenCode starts with the HTTP server enabled, you'll see a message like:
 HTTP server listening on http://localhost:54321
 ```
 
-If you don't see this message, the `t` and `b` keys in the monitor will show a "Server Unavailable" error.
+If you don't see this message, the `t` and `b` keys in the monitor will show a "Server
+Unavailable" error.
 
 ---
 
@@ -194,7 +221,8 @@ export OPENCODE_SERVER_PORT=8080
 export OPENCODE_MONITOR_DEBUG=1
 ```
 
-**Docker/Container Note**: Set `OPENCODE_MONITOR_HOST` to your desktop's IP address so the plugin can reach the monitor.
+**Docker/Container Note**: Set `OPENCODE_MONITOR_HOST` to your desktop's IP address so
+the plugin can reach the monitor.
 
 ### Remote Monitoring Setup
 
@@ -202,18 +230,21 @@ When running the TUI on a different machine than OpenCode:
 
 **Automatic IP Detection (Default)**
 
-By default, the TUI automatically detects the OpenCode server's IP from the WebSocket connection. Just set `OPENCODE_MONITOR_HOST` to point to your TUI machine:
+By default, the TUI automatically detects the OpenCode server's IP from the WebSocket
+connection. Just set `OPENCODE_MONITOR_HOST` to point to your TUI machine:
 
 ```bash
 export OPENCODE_MONITOR_HOST=192.168.1.50  # TUI host's IP
 opencode
 ```
 
-The TUI will use the source IP of the incoming WebSocket connection to construct the server URL for attach/browser functionality.
+The TUI will use the source IP of the incoming WebSocket connection to construct the
+server URL for attach/browser functionality.
 
 **Explicit Server Host (Override)**
 
-If automatic detection doesn't work (e.g., NAT, complex routing), explicitly set the server's IP:
+If automatic detection doesn't work (e.g., NAT, complex routing), explicitly set the
+server's IP:
 
 ```bash
 export OPENCODE_SERVER_HOST=192.168.1.100  # OpenCode host's IP
@@ -234,8 +265,8 @@ opencode
 
 ### Auth token (recommended)
 
-Set `OPENCODE_MONITOR_TOKEN` to require a shared token for WebSocket connections.
-The value must match in both the TUI environment and the OpenCode plugin environment.
+Set `OPENCODE_MONITOR_TOKEN` to require a shared token for WebSocket connections. The
+value must match in both the TUI environment and the OpenCode plugin environment.
 
 Generate a token once (on any machine), then copy the value:
 
@@ -254,9 +285,12 @@ export OPENCODE_MONITOR_TOKEN="<paste-token-here>"
 
 - WebSocket traffic is plaintext (no TLS).
 - Auth is a shared secret only; anyone with the token can connect.
-- If the port is exposed, a hostile client could connect, proxy SDK calls, or send fake events.
-- The plugin runs with the OpenCode process permissions; treat connected machines as trusted.
-- Session metadata is cached on disk; protect `OPENCODE_MONITOR_CACHE_FILE` on shared hosts.
+- If the port is exposed, a hostile client could connect, proxy SDK calls, or send fake
+  events.
+- The plugin runs with the OpenCode process permissions; treat connected machines as
+  trusted.
+- Session metadata is cached on disk; protect `OPENCODE_MONITOR_CACHE_FILE` on shared
+  hosts.
 - Browser URLs are built from server metadata; avoid connecting to untrusted servers.
 
 ### Recommended hardening
@@ -269,19 +303,19 @@ export OPENCODE_MONITOR_TOKEN="<paste-token-here>"
 
 ### Keyboard Navigation
 
-| Key           | Action                          |
-| ------------- | ------------------------------- |
-| `↑` / `k`     | Move selection up               |
-| `↓` / `j`     | Move selection down             |
-| `Page Up`     | Jump up one page                |
-| `Page Down`   | Jump down one page              |
-| `g`           | Jump to first item              |
-| `G`           | Jump to last item               |
-| `Enter` / `t` | Open session in OpenCode TUI    |
-| `b`           | Open session in web browser     |
-| `Space`       | Toggle server group collapse    |
-| `c`           | Toggle all server groups        |
-| `q`           | Quit                            |
+| Key           | Action                       |
+| ------------- | ---------------------------- |
+| `↑` / `k`     | Move selection up            |
+| `↓` / `j`     | Move selection down          |
+| `Page Up`     | Jump up one page             |
+| `Page Down`   | Jump down one page           |
+| `g`           | Jump to first item           |
+| `G`           | Jump to last item            |
+| `Enter` / `t` | Open session in OpenCode TUI |
+| `b`           | Open session in web browser  |
+| `Space`       | Toggle server group collapse |
+| `c`           | Toggle all server groups     |
+| `q`           | Quit                         |
 
 ### Debug Mode
 
@@ -307,30 +341,30 @@ bun start -- --debug
 
 ### Plugin Environment Variables
 
-| Variable                   | Default                       | Description                                                  |
-| -------------------------- | ----------------------------- | ------------------------------------------------------------ |
-| `OPENCODE_MONITOR_HOST`    | `127.0.0.1`                   | Monitor host(s), comma-separated                             |
-| `OPENCODE_MONITOR_PORT`    | `41235`                       | WebSocket port                                               |
-| `OPENCODE_MONITOR_TOKEN`   | -                             | Shared token for monitor authentication                      |
-| `OPENCODE_SERVER_URL`      | -                             | Full URL override for OpenCode server (e.g., `https://myserver.com:8443`) |
-| `OPENCODE_SERVER_HOST`     | `auto`                        | Server IP to advertise. `auto` = TUI detects from connection |
+| Variable                   | Default                       | Description                                                                     |
+| -------------------------- | ----------------------------- | ------------------------------------------------------------------------------- |
+| `OPENCODE_MONITOR_HOST`    | `127.0.0.1`                   | Monitor host(s), comma-separated                                                |
+| `OPENCODE_MONITOR_PORT`    | `41235`                       | WebSocket port                                                                  |
+| `OPENCODE_MONITOR_TOKEN`   | -                             | Shared token for monitor authentication                                         |
+| `OPENCODE_SERVER_URL`      | -                             | Full URL override for OpenCode server (e.g., `https://myserver.com:8443`)       |
+| `OPENCODE_SERVER_HOST`     | `auto`                        | Server IP to advertise. `auto` = TUI detects from connection                    |
 | `OPENCODE_SERVER_PORT`     | `auto`                        | Server port to advertise. `auto` = detect via lsof. Use for NAT/port forwarding |
-| `OPENCODE_MONITOR_DEBUG`   | -                             | Set to `1` for debug logging                                 |
-| `OPENCODE_PLUGIN_LOG_FILE` | `$TMPDIR/opencode-plugin.log` | Plugin log file path                                         |
+| `OPENCODE_MONITOR_DEBUG`   | -                             | Set to `1` for debug logging                                                    |
+| `OPENCODE_PLUGIN_LOG_FILE` | `$TMPDIR/opencode-plugin.log` | Plugin log file path                                                            |
 
 ### TUI Options
 
-| Option             | Description                                            |
-| ------------------ | ------------------------------------------------------ |
-| `--debug`          | Enable debug logging (see `OPENCODE_MONITOR_LOG_FILE`) |
-| `--no-notify`      | Disable desktop notifications                          |
+| Option             | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `--debug`          | Enable debug logging (see `OPENCODE_MONITOR_LOG_FILE`)       |
+| `--no-notify`      | Disable desktop notifications                                |
 | `--theme <name>`   | Load `~/.config/oc-mon/themes/<name>.toml` or built-in theme |
-| `--ws-port <port>` | WebSocket server port (default: 41235)                 |
+| `--ws-port <port>` | WebSocket server port (default: 41235)                       |
 
 ### TUI Theme Configuration
 
-`oc-mon` uses its default palette unless a theme is selected by CLI or config.
-The config directory is created automatically at `~/.config/oc-mon`.
+`oc-mon` uses its default palette unless a theme is selected by CLI or config. The
+config directory is created automatically at `~/.config/oc-mon`.
 
 ```bash
 # Use the built-in gruvbox theme, or a matching user theme file
@@ -343,8 +377,8 @@ Set a persistent theme in `~/.config/oc-mon/config.toml`:
 theme = "gruvbox"
 ```
 
-Custom themes live in `~/.config/oc-mon/themes/<name>.toml` and use flat
-string token assignments:
+Custom themes live in `~/.config/oc-mon/themes/<name>.toml` and use flat string token
+assignments:
 
 ```toml
 bg = "#f2e5bc"
@@ -358,19 +392,19 @@ warning = "#af3a03"
 success = "#79740e"
 ```
 
-CLI `--theme <name>` overrides the config file. First-pass theme files support
-only flat `key = "value"` TOML entries.
+CLI `--theme <name>` overrides the config file. First-pass theme files support only flat
+`key = "value"` TOML entries.
 
 ### TUI Environment Variables
 
-| Variable                       | Default                               | Description                                    |
-| ------------------------------ | ------------------------------------- | ---------------------------------------------- |
-| `OPENCODE_MONITOR_DEBUG`       | -                                     | Set to `1` to enable debug logging             |
-| `OPENCODE_MONITOR_LOG_FILE`    | `$TMPDIR/opencode-monitor-debug.log`  | Debug log file path                            |
-| `OPENCODE_MONITOR_CONSOLE_LOG` | `$TMPDIR/monitor.log`                 | Console redirect log                           |
-| `OPENCODE_MONITOR_CACHE_FILE`  | `$TMPDIR/opencode-monitor-cache.json` | Session cache file                             |
-| `OPENCODE_MONITOR_PORT`        | `41235`                               | WebSocket server port (same as `--ws-port`)    |
-| `OPENCODE_MONITOR_TOKEN`       | -                                     | Shared token for authentication                |
+| Variable                       | Default                               | Description                                 |
+| ------------------------------ | ------------------------------------- | ------------------------------------------- |
+| `OPENCODE_MONITOR_DEBUG`       | -                                     | Set to `1` to enable debug logging          |
+| `OPENCODE_MONITOR_LOG_FILE`    | `$TMPDIR/opencode-monitor-debug.log`  | Debug log file path                         |
+| `OPENCODE_MONITOR_CONSOLE_LOG` | `$TMPDIR/monitor.log`                 | Console redirect log                        |
+| `OPENCODE_MONITOR_CACHE_FILE`  | `$TMPDIR/opencode-monitor-cache.json` | Session cache file                          |
+| `OPENCODE_MONITOR_PORT`        | `41235`                               | WebSocket server port (same as `--ws-port`) |
+| `OPENCODE_MONITOR_TOKEN`       | -                                     | Shared token for authentication             |
 
 ## Troubleshooting
 
@@ -407,7 +441,8 @@ See [OpenCode Server Mode](#opencode-server-mode) for details.
 
 ### Wrong server shown in details
 
-- Fixed in v0.1.0: Now uses composite IDs for unique session identification across servers
+- Fixed in v0.1.0: Now uses composite IDs for unique session identification across
+  servers
 
 ### High CPU usage
 
@@ -439,4 +474,5 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, architecture details, testing guidelines, and code standards.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, architecture details,
+testing guidelines, and code standards.
