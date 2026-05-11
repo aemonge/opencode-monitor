@@ -4,7 +4,8 @@
 > fork directly via:
 >
 > ```bash
-> bun remove -g @actualyze/opencode-monitor  # remove upstream version if installed
+> bun remove -g @actualyze/opencode-monitor
+> rm -rf ~/.bun/install/cache/@actualyze/opencode-monitor*
 > bun add -g github:aemonge/opencode-monitor
 > oc-mon --install-plugin
 > ```
